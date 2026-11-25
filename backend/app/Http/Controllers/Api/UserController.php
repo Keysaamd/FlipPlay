@@ -18,6 +18,13 @@ class UserController extends Controller
         return UserResource::collection($users);
     }
 
+    public function show(string $id)
+    {
+        $user = User::with('mediaCollection')->findOrFail($id);
+
+        return new UserResource($user);
+    }
+
     public function store(Request $request)
     {
         $validated = $request->validate([

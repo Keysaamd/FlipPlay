@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\Media;
 use App\Http\Resources\UserResource;
 use App\Http\Resources\MediaResource;
+use App\Http\Requests\AddMediaToCollectionRequest;
 
 class CollectionController extends Controller
 {
@@ -20,14 +20,12 @@ class CollectionController extends Controller
     }
 
     // Menambahkan media ke koleksi user
-    public function store(Request $request, string $userId)
+    public function store(AddMediaToCollectionRequest $request, string $userId)
     {
-        $request->validate([
-            'media_id' => 'required|exists:media,id',
-        ]);
+        $validated = $request->validated();
 
         $user = User::findOrFail($userId);
-        $media = Media::findOrFail($request->media_id);
+        $media = Media::findOrFail($validated['media_id']);
 
         if ($user->mediaCollection()->where('media_id', $media->id)->exists()) {
             return response()->json([

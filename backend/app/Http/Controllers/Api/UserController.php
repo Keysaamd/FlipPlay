@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\UserResource;
+use App\Http\Requests\StoreUserRequest;
 
 
 class UserController extends Controller
@@ -25,13 +25,10 @@ class UserController extends Controller
         return new UserResource($user);
     }
 
-    public function store(Request $request)
+
+    public function store(StoreUserRequest $request)
     {
-        $validated = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'required|string|min:8',
-        ]);
+        $validated = $request->validated();
 
         $user = User::create([
             'name' => $validated['name'],
@@ -39,13 +36,11 @@ class UserController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return response()->json([
-            'message' => 'Pengguna berhasil ditambahkan.',
-            'data' => [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-            ]
-        ], 201);
+        return (new UserResource($user))
+            ->additional([
+                'message' => 'Pengguna berhasil ditambahkan.',
+            ])
+            ->response()
+            ->setStatusCode(201);
     }
 }

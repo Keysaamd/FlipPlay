@@ -17,4 +17,12 @@ class AddMediaToCollectionRequest extends FormRequest
             'media_id' => 'required|exists:media,id',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'media_id.required' => 'ID media wajib diisi.',
+            'media_id.exists' => 'Media yang dipilih tidak ditemukan.',
+        ];
+    }
 }

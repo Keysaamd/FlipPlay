@@ -13,6 +13,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        // Mengambil semua pengguna beserta koleksi media mereka, diurutkan berdasarkan waktu terbaru
         $users = User::with('mediaCollection')->latest()->get();
 
         return UserResource::collection($users);
@@ -20,6 +21,7 @@ class UserController extends Controller
 
     public function show(string $id)
     {
+        // Mengambil pengguna beserta koleksi media mereka berdasarkan ID
         $user = User::with('mediaCollection')->findOrFail($id);
 
         return new UserResource($user);

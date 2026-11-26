@@ -23,6 +23,7 @@ class MediaResource extends JsonResource
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
 
+            // Menampilkan relasi users yang terkait dengan media ini, jika relasi tersebut telah dimuat
             'users' => UserResource::collection(
                 $this->whenLoaded('users')
             ),

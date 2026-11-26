@@ -19,6 +19,7 @@ class UserResource extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
 
+            // Menampilkan relasi mediaCollection yang terkait dengan pengguna ini, jika relasi tersebut telah dimuat
             'media_collection' => MediaResource::collection(
                 $this->whenLoaded('mediaCollection')
             ),

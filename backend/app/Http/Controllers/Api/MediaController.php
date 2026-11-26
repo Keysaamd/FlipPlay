@@ -12,8 +12,8 @@ use App\Http\Resources\MediaResource;
 
 class MediaController extends Controller
 {
-    /**
-     * Display a listing of the resource.
+     /**
+     * Menampilkan seluruh data media.
      */
     public function index(Request $request)
     {
@@ -23,13 +23,14 @@ class MediaController extends Controller
             $query->where('title', 'like', '%' . $request->search . '%');
         }
 
+        // Mengambil data media beserta relasi users yang terkait, diurutkan berdasarkan waktu terbaru
         $media = $query->with('users')->latest()->get();
 
         return MediaResource::collection($media);
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Menambahkan data media baru ke database.
      */
     public function store(StoreMediaRequest $request)
     {
@@ -41,17 +42,18 @@ class MediaController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Menampilkan detail data media berdasarkan ID.
      */
     public function show(string $id)
     {
+        // Mengambil data media beserta relasi users yang terkait berdasarkan ID
         $media = Media::with('users')->findOrFail($id);
 
         return new MediaResource($media);
     }
 
     /**
-     * Update the specified resource in storage.
+     * Memperbarui data media berdasarkan ID.
      */
     public function update(UpdateMediaRequest $request, string $id)
     {
@@ -62,7 +64,7 @@ class MediaController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Menghapus data media berdasarkan ID.
      */
     public function destroy(string $id)
     {

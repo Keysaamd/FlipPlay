@@ -14,6 +14,7 @@ class CollectionController extends Controller
     // Menampilkan koleksi media milik user
     public function index(string $userId)
     {
+        // Mengambil pengguna beserta koleksi media mereka berdasarkan ID
         $user = User::with('mediaCollection')->findOrFail($userId);
 
         return new UserResource($user);
@@ -33,6 +34,7 @@ class CollectionController extends Controller
             ], 422);
         }
 
+        // Menambahkan hubungan media ke koleksi user
         $user->mediaCollection()->attach($media->id);
 
         return response()->json([

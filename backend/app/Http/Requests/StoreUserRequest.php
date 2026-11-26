@@ -19,4 +19,17 @@ class StoreUserRequest extends FormRequest
             'password' => 'required|string|min:8',
         ];
     }
+
+    public function messages(): array
+    {
+        return [
+            'name.required' => 'Nama pengguna wajib diisi.',
+            'name.string' => 'Nama pengguna harus berupa teks.',
+            'email.required' => 'Email wajib diisi.',
+            'email.email' => 'Format email tidak valid.',
+            'email.unique' => 'Email sudah digunakan.',
+            'password.required' => 'Password wajib diisi.',
+            'password.min' => 'Password minimal 8 karakter.',
+        ];
+    }
 }
